@@ -1,0 +1,289 @@
+---
+import "../styles/global.css";
+import { IoMailOutline } from "react-icons/io5";
+import { IoLogoGithub } from "react-icons/io";
+import { MdOutlineLocalPhone } from "react-icons/md";
+import { CiLinkedin } from "react-icons/ci";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Ryan Rafael — About Me</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="min-h-screen text-gray-800 font-sans"
+    style="background: linear-gradient(135deg, #fff7ed 0%, #fff1f2 35%, #f5f3ff 70%, #ede9fe 100%)"
+  >
+    <div class="max-w-3xl mx-auto px-8 py-10 flex flex-col gap-10">
+      <!-- Hero -->
+      <div class="flex items-center gap-8">
+        <!-- Avatar with gradient glow shadow -->
+        <div class="relative shrink-0 w-48 h-48">
+          <div
+            class="absolute inset-0 rounded-full blur-2xl scale-90 translate-y-3"
+            style="background: linear-gradient(to bottom right, #fb923c, #e11d48, #7c3aed); opacity: 0.45"
+          >
+          </div>
+          <div class="relative w-48 h-48 rounded-full overflow-hidden">
+            <img
+              src="./profile-picture.jpg"
+              alt="Profile photo"
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+
+        <!-- Name, title, links -->
+        <div class="flex-1 min-w-0">
+          <h1 class="text-2xl font-bold leading-tight text-gray-900">
+            Ryan Rafael
+          </h1>
+          <p
+            class="text-xs font-semibold tracking-widest uppercase mt-1"
+            style="background: linear-gradient(to right, #fb923c, #e11d48, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"
+          >
+            Operations & System Development Staff
+          </p>
+
+          <!-- Icon-only social links -->
+          <div class="flex items-center gap-4 mt-4">
+            <a
+              href="mailto:ryan.rafael2004@gmail.com"
+              title="Send me an email"
+              class="text-gray-400 hover:text-[#e11d48] transition-colors"
+            >
+              <IoMailOutline className="text-2xl" />
+            </a>
+            <a
+              href="/ryan-rafael.vcf"
+              download
+              title="Save to contacts"
+              class="text-gray-400 hover:text-[#e11d48] transition-colors"
+            >
+              <MdOutlineLocalPhone className="text-2xl" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/yanrfl/"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="LinkedIn"
+              class="text-gray-400 hover:text-[#e11d48] transition-colors"
+            >
+              <CiLinkedin className="text-2xl" />
+            </a>
+            <a
+              href=""
+              target="_blank"
+              rel="noopener noreferrer"
+              title="GitHub"
+              class="text-gray-400 hover:text-[#e11d48] transition-colors"
+            >
+              <IoLogoGithub className="text-2xl" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Intro -->
+      <section>
+        <h2 class="text-2xl font-bold text-gray-900 mb-3">Hey, I'm Ryan 👋</h2>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          I'm an operations and system development staff at Bina Nusantara
+          University @ Alam Sutera where I build and maintain full-stack systems
+          and IT infrastructure — and I genuinely enjoy the mix of writing code
+          and keeping systems running. Whether it's a new feature, a CI/CD
+          pipeline, or debugging something in production, I'm comfortable
+          handling it end-to-end.
+        </p>
+      </section>
+
+      <!-- Right Now -->
+      <section>
+        <h2
+          class="text-base font-bold mb-4 pb-1 border-b-2 border-transparent"
+          style="border-image: linear-gradient(to right, #fb923c, #e11d48, #7c3aed) 1"
+        >
+          Right Now
+        </h2>
+        <div class="flex flex-col gap-3 mt-3">
+          <div
+            class="flex items-start gap-3 p-4 rounded-xl border border-violet-100 bg-white"
+          >
+            <span class="text-xl shrink-0">💼</span>
+            <div>
+              <p class="font-semibold text-sm text-gray-800">
+                Operations & System Development Staff
+              </p>
+              <p class="text-xs text-gray-500 mt-0.5">
+                Bina Nusantara University · Full-time · Aug 2024 – Present
+              </p>
+            </div>
+          </div>
+          <div
+            class="flex items-start gap-3 p-4 rounded-xl border border-violet-100 bg-white"
+          >
+            <span class="text-xl shrink-0">🎓</span>
+            <div>
+              <p class="font-semibold text-sm text-gray-800">
+                Bachelor's in Information Systems
+              </p>
+              <p class="text-xs text-gray-500 mt-0.5">
+                Bina Nusantara University · Graduating Feb 2026
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- What I do -->
+      <section>
+        <h2
+          class="text-base font-bold mb-4 pb-1 border-b-2 border-transparent"
+          style="border-image: linear-gradient(to right, #fb923c, #e11d48, #7c3aed) 1"
+        >
+          What I Do
+        </h2>
+        <div class="grid grid-cols-2 gap-3 mt-3">
+          {
+            [
+              {
+                emoji: "🛠",
+                title: "Build",
+                body: "Full-stack web apps and internal tools, from backend APIs to polished frontends.",
+              },
+              {
+                emoji: "🖥",
+                title: "Maintain",
+                body: "IT infrastructure, servers, and networks. Keeping things up, fast, and reliable.",
+              },
+              {
+                emoji: "🚀",
+                title: "Deploy",
+                body: "CI/CD pipelines, containerised deployments, and smooth rollouts with minimal downtime.",
+              },
+              {
+                emoji: "🔍",
+                title: "Operate",
+                body: "Day-to-day monitoring, troubleshooting, and system improvements.",
+              },
+            ].map(({ emoji, title, body }) => (
+              <div class="p-4 rounded-xl border border-violet-100 bg-white flex flex-col gap-1.5">
+                <div class="flex items-center gap-2">
+                  <span class="text-lg">{emoji}</span>
+                  <span class="font-semibold text-sm text-gray-800">
+                    {title}
+                  </span>
+                </div>
+                <p class="text-xs text-gray-500 leading-relaxed">{body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- Tech Stack -->
+      <section>
+        <h2
+          class="text-base font-bold mb-4 pb-1 border-b-2 border-transparent"
+          style="border-image: linear-gradient(to right, #fb923c, #e11d48, #7c3aed) 1"
+        >
+          Tech Stack
+        </h2>
+        <div class="flex flex-col gap-4 mt-3">
+          {
+            [
+              {
+                label: "Languages",
+                tags: ["JavaScript", "TypeScript", "PHP", "Python", "Bash"],
+                accent: "#fb923c",
+                bg: "#fff7ed",
+                border: "#fed7aa",
+              },
+              {
+                label: "Frontend",
+                tags: ["React", "NextJS", "Astro", "Tailwind CSS", "HTML / CSS"],
+                accent: "#e11d48",
+                bg: "#fff1f2",
+                border: "#fecdd3",
+              },
+              {
+                label: "Backend & Database",
+                tags: ["Node.js", "Express", "MySQL", "PostgreSQL", "MariaDB"],
+                accent: "#7c3aed",
+                bg: "#f5f3ff",
+                border: "#ddd6fe",
+              },
+              {
+                label: "Infrastructure & DevOps",
+                tags: [
+                  "Linux",
+                  "Docker",
+                  "Nginx",
+                  "Proxmox",
+                  "Git",
+                  "GitHub Actions",
+                ],
+                accent: "#0891b2",
+                bg: "#ecfeff",
+                border: "#a5f3fc",
+              },
+            ].map(({ label, tags, accent, bg, border }) => (
+              <div>
+                <p
+                  class="text-xs font-semibold uppercase tracking-widest mb-2"
+                  style={`color: ${accent}`}
+                >
+                  {label}
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  {tags.map((tag) => (
+                    <span
+                      class="px-2.5 py-1 text-xs rounded-full font-medium"
+                      style={`background: ${bg}; color: ${accent}; border: 1px solid ${border}`}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- Languages -->
+      <section>
+        <h2
+          class="text-base font-bold mb-4 pb-1 border-b-2 border-transparent"
+          style="border-image: linear-gradient(to right, #fb923c, #e11d48, #7c3aed) 1"
+        >
+          Languages
+        </h2>
+        <div class="flex flex-wrap gap-3 mt-3">
+          {
+            [
+              { name: "Indonesian", level: "Native" },
+              { name: "English", level: "Fluent" },
+              { name: "Chinese", level: "Basic" },
+              { name: "Japanese", level: "Basic" },
+            ].map(({ name, level }) => (
+              <div class="flex items-center gap-2 px-3 py-2 rounded-xl border border-violet-100 bg-white">
+                <span class="text-sm font-medium text-gray-800">{name}</span>
+                <span class="text-xs text-gray-400">{level}</span>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
