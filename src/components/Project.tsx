@@ -10,14 +10,12 @@ interface ProjectProps {
   myRole?: string;
   techStack?: string[];
   openHere?: string;
-  onOpenHere?: (url: string, title: string) => void;
   link?: string;
   githubUrl?: string;
 }
 
 const linkClass =
-  "flex items-center gap-1.5 text-xs text-gray-400 hover:text-[#e11d48] transition-colors";
-
+  "flex items-center gap-1.5 text-xs text-gray-400 hover:text-[#e11d48] transition-colors cursor-pointer";
 
 export default function Project({
   title,
@@ -26,11 +24,11 @@ export default function Project({
   myRole,
   techStack,
   openHere,
-  onOpenHere,
   link,
   githubUrl,
 }: ProjectProps) {
   const [index, setIndex] = useState(0);
+  const [expanded, setExpanded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const scrollTo = (i: number) => {
@@ -51,6 +49,20 @@ export default function Project({
       containerRef.current.scrollLeft / containerRef.current.clientWidth
     );
     setIndex(newIndex);
+  };
+
+  const handleOpenHere = () => {
+    if (!openHere) return;
+    window.parent.postMessage(
+      {
+        type: "open-window",
+        id: `proj-${encodeURIComponent(openHere).slice(0, 40)}`,
+        title,
+        src: openHere,
+        emoji: "🌎",
+      },
+      "*"
+    );
   };
 
   return (
@@ -116,7 +128,24 @@ export default function Project({
       {/* Content */}
       <div className="p-5 flex flex-col gap-4 flex-1">
         <h3 className="font-bold text-gray-900 text-base leading-snug">{title}</h3>
-        <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
+        <div className="text-sm text-gray-500 leading-relaxed">
+          <p className={expanded ? "" : "line-clamp-5"}>{description}</p>
+          {!expanded ? (
+            <button
+              onClick={() => setExpanded(true)}
+              className="text-xs text-violet-500 hover:text-violet-700 transition-colors mt-1 cursor-pointer"
+            >
+              read more...
+            </button>
+          ) : (
+            <button
+              onClick={() => setExpanded(false)}
+              className="text-xs text-violet-500 hover:text-violet-700 transition-colors mt-1 cursor-pointer"
+            >
+              read less...
+            </button>
+          )}
+        </div>
 
         {/* My Role */}
         {myRole && (
@@ -147,15 +176,12 @@ export default function Project({
         {/* Action links */}
         {(openHere || link || githubUrl) && (
           <div className="flex items-center gap-4">
-            {/* {openHere && (
-              <button
-                onClick={(e) => { e.preventDefault(); onOpenHere?.(openHere, title); }}
-                className={linkClass}
-              >
+            {openHere && (
+              <button onClick={handleOpenHere} className={linkClass}>
                 <PiBrowserBold size={15} />
                 Open Here
               </button>
-            )} */}
+            )}
             {link && (
               <a href={link} target="_blank" rel="noopener noreferrer" className={linkClass}>
                 <PiGlobeHemisphereEastLight size={15} />

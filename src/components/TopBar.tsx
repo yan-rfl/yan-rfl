@@ -33,11 +33,11 @@ export default function TopBar() {
   // TopBar is permanently hidden in fullscreen — the window's own title bar takes over.
   const fullscreenStyle = isInFullscreen
     ? {
-        position: "fixed" as const,
-        top: 0, left: 0, right: 0,
-        zIndex: 10000,
-        transform: "translateY(-100%)",
-      }
+      position: "fixed" as const,
+      top: 0, left: 0, right: 0,
+      zIndex: 10000,
+      transform: "translateY(-100%)",
+    }
     : undefined;
 
   return (
@@ -46,7 +46,10 @@ export default function TopBar() {
       style={fullscreenStyle}
     >
       {/* Left: active window name */}
-      <span className="font-semibold text-white/90 tracking-wide transition-all duration-200">{activeTitle}</span>
+      <div className="flex items-center gap-4">
+        <img className="size-3" src="/favicon.svg" alt="" />
+        <span className="font-semibold text-white/90 tracking-wide transition-all duration-200">Ryan Rafael</span>
+      </div>
 
       {/* Right: status items */}
       <div className="flex items-center gap-4">

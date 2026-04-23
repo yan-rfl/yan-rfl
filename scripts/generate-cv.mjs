@@ -133,7 +133,7 @@ const html = `<!DOCTYPE html>
 
   <div class="entry">
     <div class="entry-header">
-      <span class="entry-title">Bachelor of Science in Information Systems</span>
+      <span class="entry-title">Bachelor's Degree in Information Systems</span>
       <span class="entry-date">Expected Feb 2026</span>
     </div>
     <div class="entry-sub">Bina Nusantara University · Alam Sutera Campus</div>

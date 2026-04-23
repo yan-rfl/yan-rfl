@@ -43,6 +43,17 @@ const accentMap = {
     dark: { gradient: "from-zinc-800 to-zinc-900", shadow: "shadow-black/40", bar: "bg-white/5" },
 };
 
+function useIsMobile() {
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth < 768);
+        check();
+        window.addEventListener("resize", check);
+        return () => window.removeEventListener("resize", check);
+    }, []);
+    return isMobile;
+}
+
 type ResizeEdge = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";
 
 const edgeCursorMap: Record<ResizeEdge, string> = {
@@ -70,6 +81,7 @@ export default function Window({
     onExitFullscreen,
 }: WindowProps) {
     const { isTopbarVisibleInFullscreen, setTopbarVisibleInFullscreen, setDockVisibleInFullscreen } = useWindows();
+    const isMobile = useIsMobile();
     const [position, setPosition] = useState<Position>({ x: initialX, y: initialY });
     const [size, setSize] = useState<Size>({ width: BASE_WIDTH, height: BASE_HEIGHT });
     const [blocking, setBlocking] = useState(false);
@@ -160,7 +172,7 @@ export default function Window({
     // This prevents the double-click handler from seeing a stale isMaximized=false
     // caused by the first mousedown of the dblclick sequence.
     const handleDragMouseDown = useCallback((e: React.MouseEvent) => {
-        if (isFullscreen) return;
+        if (isFullscreen || isMobile) return;
         e.preventDefault();
 
         dragOffset.current = {
@@ -168,19 +180,27 @@ export default function Window({
             y: e.clientY - positionRef.current.y,
         };
 
-        const { boundsW, dockTop } = getBounds();
+        const { boundsW, boundsH } = getBounds();
+        // Minimum grab area — enough of the title bar must remain on-screen to drag back.
+        const GRAB_W = 80;
+        const GRAB_H = 30;
         setBlocking(true);
         let clearedMaximize = false;
+        const startClientX = e.clientX;
+        const startClientY = e.clientY;
 
         const handleMouseMove = (e: MouseEvent) => {
             if (!clearedMaximize) {
+                const dx = Math.abs(e.clientX - startClientX);
+                const dy = Math.abs(e.clientY - startClientY);
+                if (dx <= 4 && dy <= 4) return;
                 clearedMaximize = true;
                 setIsMaximized(false);
                 setSavedState(null);
             }
-            const { width, height } = sizeRef.current;
-            const newX = Math.min(Math.max(0, e.clientX - dragOffset.current.x), boundsW - width);
-            const newY = Math.min(Math.max(0, e.clientY - dragOffset.current.y), dockTop - height);
+            const { width } = sizeRef.current;
+            const newX = Math.min(Math.max(-(width - GRAB_W), e.clientX - dragOffset.current.x), boundsW - GRAB_W);
+            const newY = Math.min(Math.max(0, e.clientY - dragOffset.current.y), boundsH - GRAB_H);
             setPosition({ x: newX, y: newY });
         };
 
@@ -192,11 +212,11 @@ export default function Window({
 
         window.addEventListener("mousemove", handleMouseMove);
         window.addEventListener("mouseup", handleMouseUp);
-    }, [isFullscreen, getBounds]);
+    }, [isFullscreen, isMobile, getBounds]);
 
     // --- Double-click title bar: maximize / restore ---
     const handleTitleBarDoubleClick = useCallback(() => {
-        if (isFullscreen) return;
+        if (isFullscreen || isMobile) return;
         // Read from refs so we always get the current value even if useCallback
         // was created before the latest state update.
         if (isMaximizedRef.current) {
@@ -214,7 +234,7 @@ export default function Window({
             setSize({ width: boundsW, height: dockTop });
             setIsMaximized(true);
         }
-    }, [isFullscreen, getBounds]);
+    }, [isFullscreen, isMobile, getBounds]);
 
     // --- Resize ---
     const resizeStart = useRef<{
@@ -309,6 +329,18 @@ export default function Window({
             pointerEvents: "auto" as const,
             transition: "none",
         }
+        : isMobile
+        ? {
+            position: "absolute" as const,
+            top: 0, left: 0, right: 0, bottom: 0,
+            zIndex, borderRadius: 0,
+            transform: isMinimized
+                ? "scale(0.1) translateY(200px)"
+                : mounted && !isClosing ? "scale(1)" : "scale(0.92)",
+            opacity: isMinimized ? 0 : mounted && !isClosing ? 1 : 0,
+            pointerEvents: (!mounted || isClosing || isMinimized) ? "none" as const : "auto" as const,
+            transition: "transform 0.3s ease-out, opacity 0.3s ease-out",
+        }
         : {
             left: position.x,
             top: isHidden ? "calc(100% - 20px)" : position.y,
@@ -351,14 +383,17 @@ export default function Window({
                 overflow-hidden
             `}
         >
-            {/* Resize handles — only in normal mode */}
-            {!isFullscreen && edges.map((edge) => resizeHandle(edge))}
+            {/* Resize handles — only in normal desktop mode */}
+            {!isFullscreen && !isMobile && edges.map((edge) => resizeHandle(edge))}
 
 
             {/* Title bar */}
             <div
+                ref={titleBarRef}
                 onMouseDown={isFullscreen ? undefined : handleDragMouseDown}
                 onDoubleClick={handleTitleBarDoubleClick}
+                onMouseEnter={isFullscreen ? showTopbar : undefined}
+                onMouseLeave={isFullscreen ? scheduleHideTopbar : undefined}
                 style={titleBarFullscreenStyle}
                 className={`
                     flex items-center gap-2.5 shrink-0
@@ -386,9 +421,7 @@ export default function Window({
                     {/* Green — Fullscreen / restore */}
                     <div
                         className={`w-3 h-3 rounded-full flex items-center justify-center transition-colors ${isActive ? "bg-green-400" : "bg-zinc-600 group-hover:bg-green-400"}`}
-                        onMouseDown={(e) => { 
-                            // e.stopPropagation(); isFullscreen ? onExitFullscreen?.() : onEnterFullscreen?.();
-                         }}
+                        onMouseDown={(e) => { e.stopPropagation(); isFullscreen ? onExitFullscreen?.() : onEnterFullscreen?.(); }}
                     >
                         {isFullscreen
                             ? <MacRestoreIcon className="text-zinc-900 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -408,6 +441,32 @@ export default function Window({
                     <div className="absolute inset-0 z-40" onMouseDown={onBringToFront} />
                 )}
                 {children}
+                {/* Sensor strips: sit above the iframe (which swallows all mousemove events)
+                    so we can detect the cursor entering the top/bottom zones in fullscreen. */}
+                {isFullscreen && (
+                    <>
+                        <div
+                            className="absolute top-0 left-0 right-0 z-4"
+                            style={{ height: 8 }}
+                            onMouseEnter={showTopbar}
+                            onMouseLeave={(e) => {
+                                const tb = titleBarRef.current;
+                                if (tb?.contains(e.relatedTarget as Node) || tb === e.relatedTarget) return;
+                                scheduleHideTopbar();
+                            }}
+                        />
+                        <div
+                            className="absolute bottom-0 left-0 right-0 z-4"
+                            style={{ height: 8 }}
+                            onMouseEnter={showDock}
+                            onMouseLeave={(e) => {
+                                const dock = document.querySelector("[data-dock]");
+                                if (dock?.contains(e.relatedTarget as Node) || dock === e.relatedTarget) return;
+                                setDockVisibleInFullscreen(false);
+                            }}
+                        />
+                    </>
+                )}
             </div>
         </div>
     );

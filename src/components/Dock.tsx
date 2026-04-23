@@ -52,7 +52,7 @@ export default function Dock() {
         <div
             data-dock
             style={dockStyle}
-            className="absolute bottom-3 left-1/2 -translate-x-1/2 z-9999 flex items-end gap-0.5 px-2.5 py-2 bg-zinc-900/80 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl"
+            className={`${isInFullscreen ? "" : "absolute bottom-3 left-1/2 -translate-x-1/2"} z-9999 flex items-end gap-0.5 px-2.5 py-2 bg-zinc-900/50 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl`}
             onMouseLeave={isInFullscreen ? () => setDockVisibleInFullscreen(false) : undefined}
         >
             {dockApps.map((app) => {
@@ -64,10 +64,10 @@ export default function Dock() {
                     <button
                         key={app.id}
                         onClick={() => handleClick(app)}
-                        className="flex flex-col items-center gap-1 px-1.5 py-0.5 group"
+                        className="flex flex-col items-center gap-1 px-1.5 py-0.5 group touch-manipulation"
                         title={app.title}
                     >
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-2xl transition-colors duration-150 ${
+                        <div className={`w-10 h-10 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-2xl transition-colors duration-150 ${
                             isActive
                                 ? "bg-white/20 group-hover:bg-white/25"
                                 : "bg-transparent group-hover:bg-white/15"

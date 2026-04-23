@@ -3,7 +3,11 @@ import "../styles/global.css";
 import Layout from "../layouts/Layout.astro";
 import App from "../components/App";
 
-const initialWindows: never[] = [];
+const initialWindows = [
+	{ id: "my-cv",       title: "My CV",       src: "/MyCV",       emoji: "📄", initialX: 30,  initialY: 20  },
+	{ id: "my-projects", title: "My Projects", src: "/MyProjects", emoji: "📁", initialX: 90,  initialY: 55  },
+	{ id: "about-me",    title: "About Me",    src: "/AboutMe",    emoji: "🧑🏻", initialX: 160, initialY: 90  },
+];
 ---
 
 <Layout>

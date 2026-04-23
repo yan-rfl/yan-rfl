@@ -3,7 +3,6 @@ import { useWindows } from "../contexts/WindowsContext";
 import type { WindowConfig } from "../contexts/WindowsContext";
 import Desktop from "./Desktop";
 import Dock from "./Dock";
-import DesktopIcons from "./DesktopIcons";
 
 export default function DesktopArea() {
     const { isShowingDesktop, showDesktop, hideDesktop, openWindow, bringToFront, windows } = useWindows();
@@ -33,7 +32,6 @@ export default function DesktopArea() {
                 className="absolute inset-0 z-0"
                 onMouseDown={() => (isShowingDesktop ? hideDesktop() : showDesktop())}
             />
-            <DesktopIcons />
             <Desktop />
             <Dock />
         </div>
