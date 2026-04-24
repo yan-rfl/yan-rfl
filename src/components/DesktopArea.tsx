@@ -32,6 +32,14 @@ export default function DesktopArea() {
                 className="absolute inset-0 z-0"
                 onMouseDown={() => (isShowingDesktop ? hideDesktop() : showDesktop())}
             />
+
+            {/* Wallpaper text */}
+            <div className="absolute inset-0 z-1 flex items-center justify-center pointer-events-none select-none">
+                <p className="text-[clamp(3rem,8vw,7rem)] font-black leading-none tracking-tighter"
+                   style={{ color: "rgba(0,0,0,0.055)" }}>
+                    Ryan Rafael
+                </p>
+            </div>
             <Desktop />
             <Dock />
         </div>

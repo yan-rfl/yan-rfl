@@ -82,8 +82,16 @@ export default function Window({
 }: WindowProps) {
     const { isTopbarVisibleInFullscreen, setTopbarVisibleInFullscreen, setDockVisibleInFullscreen } = useWindows();
     const isMobile = useIsMobile();
+    const [mobileDockH, setMobileDockH] = useState(0);
     const [position, setPosition] = useState<Position>({ x: initialX, y: initialY });
-    const [size, setSize] = useState<Size>({ width: BASE_WIDTH, height: BASE_HEIGHT });
+    const [size, setSize] = useState<Size>(() => {
+        const vw = typeof window !== "undefined" ? window.innerWidth : 1440;
+        const vh = typeof window !== "undefined" ? window.innerHeight : 900;
+        return {
+            width: Math.min(BASE_WIDTH, Math.max(MIN_WIDTH, Math.round(vw * 0.65))),
+            height: Math.min(BASE_HEIGHT, Math.max(MIN_HEIGHT, Math.round(vh * 0.60))),
+        };
+    });
     const [blocking, setBlocking] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [isMaximized, setIsMaximized] = useState(false);
@@ -96,6 +104,17 @@ export default function Window({
         });
         return () => cancelAnimationFrame(raf1);
     }, []);
+
+    useEffect(() => {
+        if (!isMobile) { setMobileDockH(0); return; }
+        const measure = () => {
+            const el = document.querySelector("[data-dock]") as HTMLElement | null;
+            if (el) setMobileDockH(el.offsetHeight);
+        };
+        const t = setTimeout(measure, 50);
+        window.addEventListener("resize", measure);
+        return () => { clearTimeout(t); window.removeEventListener("resize", measure); };
+    }, [isMobile]);
 
     // Fullscreen hover: iframes swallow mousemove events so window.addEventListener("mousemove")
     // won't fire when the cursor is over the iframe. Instead we use thin sensor strips at the
@@ -332,7 +351,7 @@ export default function Window({
         : isMobile
         ? {
             position: "absolute" as const,
-            top: 0, left: 0, right: 0, bottom: 0,
+            top: 0, left: 0, right: 0, bottom: mobileDockH,
             zIndex, borderRadius: 0,
             transform: isMinimized
                 ? "scale(0.1) translateY(200px)"

@@ -1,8 +1,17 @@
 import { useState, useEffect } from "react";
 import { CiBatteryFull } from "react-icons/ci";
-import { HiOutlineAdjustments } from "react-icons/hi";
-import { HiSun, HiMoon } from "react-icons/hi";
 import { useWindows } from "../contexts/WindowsContext";
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
 
 function useClock() {
   const [now, setNow] = useState(new Date());
@@ -14,10 +23,12 @@ function useClock() {
 }
 
 export default function TopBar() {
+  const isMobile = useIsMobile();
   const now = useClock();
-  const { windows, order, fullscreenId } = useWindows();
-  const activeTitle = windows.find((w) => w.id === order[order.length - 1])?.title ?? "Desktop";
+  const { fullscreenId } = useWindows();
   const isInFullscreen = fullscreenId !== null;
+
+  if (isMobile) return null;
 
   const timeStr = now.toLocaleTimeString("en-US", {
     hour: "numeric",
@@ -30,7 +41,6 @@ export default function TopBar() {
     day: "numeric",
   });
 
-  // TopBar is permanently hidden in fullscreen — the window's own title bar takes over.
   const fullscreenStyle = isInFullscreen
     ? {
       position: "fixed" as const,
@@ -45,13 +55,10 @@ export default function TopBar() {
       className="h-7 bg-zinc-900 flex items-center justify-between px-4 text-white text-xs font-medium select-none shrink-0 border-b border-white/10 z-50"
       style={fullscreenStyle}
     >
-      {/* Left: active window name */}
       <div className="flex items-center gap-4">
         <img className="size-3" src="/favicon.svg" alt="" />
-        <span className="font-semibold text-white/90 tracking-wide transition-all duration-200">Ryan Rafael</span>
+        <span className="font-semibold text-white/90 tracking-wide">Ryan Rafael</span>
       </div>
-
-      {/* Right: status items */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-1 text-white/75">
           <CiBatteryFull size={20} />
