@@ -1,0 +1,67 @@
+export interface ProjectData {
+    id: string;
+    title: string;
+    year: string;
+    photos?: string[];
+    description: string;
+    myRole?: string;
+    techStack?: string[];
+    openHere?: string;
+    link?: string;
+    githubUrl?: string;
+}
+
+export const PROJECTS: ProjectData[] = [
+    {
+        id: "ping",
+        title: "Ping!",
+        year: "2026",
+        photos: ["/Ping/1.png", "/Ping/2.png", "/Ping/3.png", "/Ping/4.png"],
+        description: "Ping! is an intelligent communication and reporting system designed for LCAS laboratory operations. It centralizes previously scattered communication channels and replaces manual reporting processes with a more efficient, data-driven workflow. The platform features Ping! Bot, an AI-powered assistant that uses Retrieval-Augmented Generation (RAG) to provide instant solutions for common issues, reducing repetitive support requests and easing the workload of the Operation & System Development (OSD) team.",
+        techStack: ["NextJS", "Tailwind CSS", "MySQL", "ExpressJS"],
+    },
+    {
+        id: "backup-lcas",
+        title: "Backup LCAS",
+        year: "2025",
+        photos: ["/BackupLCAS/1.png", "/BackupLCAS/2.png", "/BackupLCAS/3.png", "/BackupLCAS/4.png", "/BackupLCAS/5.png", "/BackupLCAS/6.png"],
+        description: "Backup LCAS is a comprehensive web-based platform designed to streamline file management and backup processes for Bina Nusantara University. It enables users to efficiently navigate and organize server file structures while providing students with a secure space to submit project backups. In addition, staff members can request and manage backups through an integrated ticketing system, ensuring quick and reliable data retrieval. With its user-friendly interface and robust security features, Backup LCAS improves data organization, supports collaboration, and optimizes backup management for both students and faculty.",
+        myRole: "Backend Developer",
+        techStack: ["NextJS", "Tailwind CSS", "MySQL", "ExpressJS"],
+    },
+    {
+        id: "legacy-portfolio",
+        title: "Legacy Portfolio",
+        year: "2024",
+        photos: ["/Yanrfl/1.png", "/Yanrfl/2.png"],
+        description: "My old portfolio followed a similar concept to this one, but back then I was obsessed with terminal-style UIs because I used NVIM as my main IDE, which inspired the idea. Since my previous portfolio only explored the basic concept of an operating system and terminal-based interface, I decided to create a more polished and complete operating system UI design for my current portfolio.",
+        myRole: "Fullstack Developer",
+        techStack: ["NextJS", "TypeScript", "Tailwind CSS"],
+        openHere: "https://yanrfl.vercel.app/",
+        link: "https://yanrfl.vercel.app/",
+    },
+    {
+        id: "miserease",
+        title: "Miserease",
+        year: "2024",
+        photos: ["/Miserease/1.png", "/Miserease/2.png", "/Miserease/3.png"],
+        description: "Miserease is a web application inspired by Social Comparison Theory, which suggests that people often feel better when they know others are facing similar challenges. It serves as a platform where users can share their problems in the form of stories, with the hope of easing their burdens through connection and understanding. This web application was created as my team GNBKitchen's submission for GarudaHacks 4.0.",
+        myRole: "Backend Developer",
+        techStack: ["ReactJS", "Tailwind CSS", "TypeScript"],
+        openHere: "https://miserease.vercel.app",
+        link: "https://miserease.vercel.app",
+        githubUrl: "https://github.com/victorhalimm/Miserease",
+    },
+    {
+        id: "codehub",
+        title: "Codehub",
+        year: "2024",
+        photos: ["/Codehub/1.png", "/Codehub/2.png", "/Codehub/3.png", "/Codehub/4.png"],
+        description: "CodeHub is a commercial website created for one of my college projects. It was designed as a community platform for programmers, where members can connect with one another and gain access to weekly training sessions and exercises to improve their skills. The website was built using only HTML and CSS within a few days, which is why it is not yet optimized for mobile devices.",
+        myRole: "Frontend Developer",
+        techStack: ["HTML", "CSS"],
+        openHere: "https://codehub-alpha.vercel.app",
+        link: "https://codehub-alpha.vercel.app",
+        githubUrl: "https://github.com/RR23-2/Codehub",
+    },
+];

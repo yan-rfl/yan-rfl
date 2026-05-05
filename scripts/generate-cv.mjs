@@ -88,7 +88,7 @@ const html = `<!DOCTYPE html>
   <span>ryan.rafael2004@gmail.com</span>
   <span>+62 821-5783-7123</span>
   <span>linkedin.com/in/yanrfl</span>
-  <span>yan-rfl.com</span>
+  <span>yan-rfl.vercel.app</span>
   <span>Tangerang, Banten, Indonesia</span>
 </div>
 
@@ -136,7 +136,7 @@ const html = `<!DOCTYPE html>
       <span class="entry-title">Bachelor's Degree in Information Systems</span>
       <span class="entry-date">Expected Feb 2026</span>
     </div>
-    <div class="entry-sub">Bina Nusantara University · Alam Sutera Campus</div>
+    <div class="entry-sub">Bina Nusantara University · Alam Sutera Campus &nbsp;·&nbsp; GPA: 3.74</div>
   </div>
 </div>
 
